@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - HOST=backend
+      - PORT=8000
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - LLM_NAME=x5-airun-medium
+      - LLM_BASE_URL=http://mn-dgx01.x5.ru:8000/v1
+      - BASE_PREDICTION_MODEL_PATH=models/prediction_model/base_model
+      - TRAINED_PREDICTION_MODEL_PATH=models/prediction_model/trained_model
+    volumes:
+      - ./models/prediction_model:/app/models/prediction_model
